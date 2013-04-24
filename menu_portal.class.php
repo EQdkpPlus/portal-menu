@@ -53,15 +53,6 @@ class menu_portal extends portal_generic {
 				
 		$arrMenuItems = $this->core->build_menu_array(true, true);
 		
-		if(is_array($this->pdh->get('pages', 'startpage_list', array()))){
-			// Add Pages to startpage array
-			$arrMenuItems = array_merge_recursive( $arrMenuItems, $this->pdh->get('pages', 'startpage_list', array()));
-		}
-		
-		if(is_array($this->pdh->get('pages', 'guildrule_page', array(true)))){
-			$arrMenuItems = array_merge_recursive( $arrMenuItems, $this->pdh->get('pages', 'guildrule_page', array(true)));
-		}
-		
 		foreach($arrMenuItems as $page){
 			$link = $this->user->removeSIDfromString($page['link']);
 			$hash = (isset($page['_hash'])) ? $page['_hash'] : md5($link.$page['text']);
@@ -146,16 +137,7 @@ class menu_portal extends portal_generic {
 		if (!$arrItems) return '';
 		
 		$arrMenuItems = $this->core->build_menu_array(true, true);
-		
-		if(is_array($this->pdh->get('pages', 'startpage_list', array()))){
-			// Add Pages to startpage array
-			$arrMenuItems = array_merge_recursive( $arrMenuItems, $this->pdh->get('pages', 'startpage_list', array()));
-		}
-		
-		if(is_array($this->pdh->get('pages', 'guildrule_page', array(true)))){
-			$arrMenuItems = array_merge_recursive( $arrMenuItems, $this->pdh->get('pages', 'guildrule_page', array(true)));
-		}
-		
+						
 		foreach($arrMenuItems as $page){
 			$link = $this->user->removeSIDfromString($page['link']);
 			$hash = (isset($page['_hash'])) ? $page['_hash'] : md5($link.$page['text']);
