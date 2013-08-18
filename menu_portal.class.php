@@ -48,7 +48,7 @@ class menu_portal extends portal_generic {
 	
 	public function get_settings($state){
 		$arrOptions = array(
-			0 => '',
+			' ' => '',
 		);
 				
 		$arrMenuItems = $this->core->build_menu_array(true, true);
@@ -74,7 +74,7 @@ class menu_portal extends portal_generic {
 		if (!$arrItems) $arrItems = array();
 		$maxID = (count($arrItems)) ? max($arrItems) : 0;
 		$newID = $maxID+1;
-		
+				
 		if ($state == 'fetch_old' || $state == 'save'){
 			$count = 1;
 			foreach($arrItems as $key => $value){			
@@ -94,13 +94,13 @@ class menu_portal extends portal_generic {
 		
 		if ($state == 'fetch_new'){
 			$count = 1;
-			foreach($arrItems as $key => $value){			
-				if ($this->config('pk_menu_link_'.$key) == "" || $this->config('pk_menu_link_'.$key) == "0" || !isset($arrOptions[$this->config('pk_menu_link_'.$key)])){
+			foreach($arrItems as $key => $value){
+				if ($this->config('pk_menu_link_'.$key) == "" || $this->config('pk_menu_link_'.$key) == " " || !isset($arrOptions[$this->config('pk_menu_link_'.$key)])){
 					unset($arrItems[$key]);
 					$this->del_config('pk_menu_link_'.$key);
 				} else {
-					$settings['pk_menu_link_'.($key)] = array(
-						'name'		=> 'pk_menu_link_'.($key),
+					$settings['pk_menu_link_'.$key] = array(
+						'name'		=> 'pk_menu_link_'.$key,
 						'language'	=> sprintf($this->user->lang('pk_link'), $count),
 						'property'	=> 'dropdown',
 						'options'	=> $arrOptions,
