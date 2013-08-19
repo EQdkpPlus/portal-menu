@@ -168,5 +168,4 @@ class menu_portal extends portal_generic {
 		$this->del_config('pk_menu_count');
 	}
 }
-if(version_compare(PHP_VERSION, '5.3.0', '<')) registry::add_const('short_menu_portal', menu_portal::__shortcuts());
 ?>
