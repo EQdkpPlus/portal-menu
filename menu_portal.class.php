@@ -155,7 +155,7 @@ class menu_portal extends portal_generic {
 	}
 
 	
-	public function install(){
+	public function static reset(){
 		$arrItems = @unserialize($this->config('pk_menu_count'));
 		if (!$arrItems) $arrItems = array();
 		foreach($arrItems as $key => $value){			
