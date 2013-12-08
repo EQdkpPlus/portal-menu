@@ -154,14 +154,14 @@ class menu_portal extends portal_generic {
 		return $html;
 	}
 
-	
-	public function static reset(){
+	// TODO: Hoofy muss angepasst werden
+	/*public function static reset(){
 		$arrItems = @unserialize($this->config('pk_menu_count'));
 		if (!$arrItems) $arrItems = array();
 		foreach($arrItems as $key => $value){			
 			$this->del_config('pk_menu_link_'.$key);
 		}
 		$this->del_config('pk_menu_count');
-	}
+	}*/
 }
 ?>
