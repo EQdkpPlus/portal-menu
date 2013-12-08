@@ -21,30 +21,26 @@ if ( !defined('EQDKP_INC') ){
 }
 
 class menu_portal extends portal_generic {
-	public static function __shortcuts() {
-		$shortcuts = array('core', 'config', 'pdh', 'user');
-		return array_merge(parent::$shortcuts, $shortcuts);
-	}
 
-	protected $path		= 'menu';
-	protected $data		= array(
+	protected static $path		= 'menu';
+	protected static $data		= array(
 		'name'			=> 'Menu Module',
 		'version'		=> '0.1.0',
 		'author'		=> 'GodMod',
 		'contact'		=> EQDKP_PROJECT_URL,
 		'description'	=> 'Create your own menus',
+		'lang_prefix'	=> 'menu_',
+		'multiple'		=> true,
 	);
-	protected $positions = array('middle', 'left', 'right', 'bottom');
+	protected static $positions = array('middle', 'left', 'right', 'bottom');
 	
 	protected $settings	= array();
 	
-	protected $install	= array(
+	protected static $install	= array(
 		'autoenable'		=> '0',
 		'defaultposition'	=> 'left',
 		'defaultnumber'		=> '2',
 	);
-	
-	protected $multiple = true;
 	
 	public function get_settings($state){
 		$arrOptions = array(
