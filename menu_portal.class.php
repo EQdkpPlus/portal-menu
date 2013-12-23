@@ -34,7 +34,11 @@ class menu_portal extends portal_generic {
 	);
 	protected static $positions = array('middle', 'left', 'right', 'bottom');
 	
-	protected $settings	= array();
+	protected $settings	= array(
+		'headtext'	=> array(
+			'type'	=> 'text',
+			'size'		=> 30,
+		));
 	
 	protected static $install	= array(
 		'autoenable'		=> '0',
@@ -46,9 +50,8 @@ class menu_portal extends portal_generic {
 		$arrOptions = array(
 			' ' => '',
 		);
-				
+		// get all available links for dropdown
 		$arrMenuItems = $this->core->build_menu_array(true, true);
-		
 		foreach($arrMenuItems as $page){
 			$link = $this->user->removeSIDfromString($page['link']);
 			$hash = (isset($page['_hash'])) ? $page['_hash'] : md5($link.$page['text']);
@@ -56,84 +59,43 @@ class menu_portal extends portal_generic {
 				$arrOptions[$hash] = $page['text'].' ('.$link.')';
 			}
 		}
-		
-		$settings = array(
-			'pk_menu_headtext'	=> array(
-				'name'		=> 'pk_menu_headtext',
-				'language'	=> 'pk_menu_headtext',
-				'property'	=> 'text',
-				'size'		=> 30,
-			),
-		);
 
-		$arrItems = @unserialize($this->config('pk_menu_count'));
-		if (!$arrItems) $arrItems = array();
-		$maxID = (count($arrItems)) ? max($arrItems) : 0;
+		$maxID = (int) $this->config('link_count');
 		$newID = $maxID+1;
-				
-		if ($state == 'fetch_old' || $state == 'save'){
-			$count = 1;
-			foreach($arrItems as $key => $value){			
-				$settings['pk_menu_link_'.($key)] = array(
-					'name'		=> 'pk_menu_link_'.($key),
-					'language'	=> sprintf($this->user->lang('pk_link'), $count),
-					'property'	=> 'dropdown',
-					'options'	=> $arrOptions,
-					'no_lang'	=> true,
-					'javascript'=> 'onchange="load_settings()"',
-					'default'	=> "",
-				);
-				$count++;
-			}
-			return $settings;
-		}
+		// add a new entry if new settings are displayed / fetched and last link is filled
+		$maxloop = ($state == 'fetch_new' && $this->config('link_'.$maxID) != ' ') ? $newID : $maxID;
 		
-		if ($state == 'fetch_new'){
-			$count = 1;
-			foreach($arrItems as $key => $value){
-				if ($this->config('pk_menu_link_'.$key) == "" || $this->config('pk_menu_link_'.$key) == " " || !isset($arrOptions[$this->config('pk_menu_link_'.$key)])){
-					unset($arrItems[$key]);
-					$this->del_config('pk_menu_link_'.$key);
-				} else {
-					$settings['pk_menu_link_'.$key] = array(
-						'name'		=> 'pk_menu_link_'.$key,
-						'language'	=> sprintf($this->user->lang('pk_link'), $count),
-						'property'	=> 'dropdown',
-						'options'	=> $arrOptions,
-						'no_lang'	=> true,
-						'javascript'=> 'onchange="load_settings()"',
-						'default'	=> "",
-					);
-					$count++;
+		for($i=1;$i<=$maxloop;$i++) {
+			// check for outdated links
+			if($state == 'fetch_new') {
+				if ($i != $maxloop && ($this->config('link_'.$i) == "" || $this->config('link_'.$i) == " " || !isset($arrOptions[$this->config('link_'.$i)]))) {
+					$this->del_config('link_'.$i);
+					// move all links one number down
+					for($j=$i+1;$j<=$maxloop;$j++) {
+						$this->set_config('link_'.($j-1), $this->config('link_'.$j));
+					}
+					$maxloop--;
 				}
 			}
-			
-			$settings['pk_menu_link_'.($newID)] = array(
-				'name'		=> 'pk_menu_link_'.($newID),
-				'language'	=> sprintf($this->user->lang('pk_link'), $count),
-				'property'	=> 'dropdown',
+			$this->settings['link_'.$i] = array(
+				'dir_lang'	=> sprintf($this->user->lang('menu_f_link'), $i),
+				'type'		=> 'dropdown',
 				'options'	=> $arrOptions,
-				'no_lang'	=> true,
-				'javascript'=> 'onchange="load_settings()"',
-				'default'	=> "",
+				'class'		=> 'js_reload',
+				'default'	=> '',
 			);
-			$arrItems[$newID] = $newID;
-			
-			$this->set_config('pk_menu_count', serialize($arrItems));
 		}
-
-		return $settings;
+		if($state == 'fetch_new') $this->set_config('link_count', $i-1);
+		return $this->settings;
 	}
 
 	public function output() {
-		if($this->config('pk_menu_headtext')){
-			$this->header = sanitize($this->config('pk_menu_headtext'));
+		if($this->config('headtext')){
+			$this->header = sanitize($this->config('headtext'));
 		}
-		$arrItems = @unserialize($this->config('pk_menu_count'));
-		if (!$arrItems) return '';
+		if (!$this->config('link_count')) return '';
 		
 		$arrMenuItems = $this->core->build_menu_array(true, true);
-						
 		foreach($arrMenuItems as $page){
 			$link = $this->user->removeSIDfromString($page['link']);
 			$hash = (isset($page['_hash'])) ? $page['_hash'] : md5($link.$page['text']);
@@ -143,8 +105,8 @@ class menu_portal extends portal_generic {
 		}
 
 		$html = '<ul class="menu">';
-		foreach($arrItems as $key => $value){	
-			$hash = $this->config('pk_menu_link_'.$key);
+		for($i=1;$i<=$this->config('link_count');$i++){	
+			$hash = $this->config('link_'.$i);
 			if (isset($arrOptions[$hash])){
 				$data = $arrOptions[$hash];
 				$html .= '<li>'.$this->core->createLink($data).'</li>';
@@ -154,14 +116,15 @@ class menu_portal extends portal_generic {
 		return $html;
 	}
 
-	// TODO: Hoofy muss angepasst werden
-	/*public function static reset(){
-		$arrItems = @unserialize($this->config('pk_menu_count'));
-		if (!$arrItems) $arrItems = array();
-		foreach($arrItems as $key => $value){			
-			$this->del_config('pk_menu_link_'.$key);
+	public static function uninstall(){
+		$menu_portals = register('pdh')->get('portal', 'id_list', array('path' => 'menu'));
+		$conf = register('config');
+		foreach($menu_portals as $id) {
+			for($i=1;$i<=$conf->get('link_count', 'pmod_'.$id);$i++) {
+				$conf->del('link_'.$i, 'pmod_'.$id);
+			}
 		}
-		$this->del_config('pk_menu_count');
-	}*/
+		$conf->del('link_count');
+	}
 }
 ?>

@@ -18,8 +18,8 @@
 
 	$lang['menu']				= 'Menü';
 	$lang['menu_name']			= 'Menü';
-	$lang['menu_desc']			= 'Zeigt ausgewählte News an';
-	$lang['pk_menu_headtext']	= 'Titel des Moduls';
-	$lang['pk_link']			= 'Link %s';
+	$lang['menu_desc']			= 'Zeigt ausgewählte Links an';
+	$lang['menu_f_headtext']	= 'Titel des Moduls';
+	$lang['menu_f_link']		= 'Link %s';
 
 ?>
