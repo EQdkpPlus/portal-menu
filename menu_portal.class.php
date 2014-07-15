@@ -28,6 +28,7 @@ class menu_portal extends portal_generic {
 		'version'		=> '0.1.0',
 		'author'		=> 'GodMod',
 		'contact'		=> EQDKP_PROJECT_URL,
+		'icon'			=> 'fa-bars',
 		'description'	=> 'Create your own menus',
 		'lang_prefix'	=> 'menu_',
 		'multiple'		=> true,
