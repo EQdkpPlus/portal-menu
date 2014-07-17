@@ -36,10 +36,7 @@ class menu_portal extends portal_generic {
 	protected static $positions = array('middle', 'left', 'right', 'bottom');
 	
 	protected $settings	= array(
-		'headtext'	=> array(
-			'type'	=> 'text',
-			'size'		=> 30,
-		));
+	);
 	
 	protected static $install	= array(
 		'autoenable'		=> '0',
@@ -91,9 +88,6 @@ class menu_portal extends portal_generic {
 	}
 
 	public function output() {
-		if($this->config('headtext')){
-			$this->header = sanitize($this->config('headtext'));
-		}
 		if (!$this->config('link_count')) return '';
 		
 		$arrMenuItems = $this->core->build_menu_array(true, true);

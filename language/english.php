@@ -16,10 +16,8 @@
  * $Id: english.php 12435 2012-11-11 18:07:23Z wallenium $
  */
 
-	$lang['featurednews']				= 'Featured News';
-	$lang['featurednews_name']			= 'Featured News';
-	$lang['featurednews_desc']			= 'Shows selected news';
-	$lang['pk_featurednews_headtext']	= 'Module title';
-	$lang['pk_featurednews_news']		= 'Select news';
-	$lang['pk_featurednews_news_help']	= 'Max. 4 news will be shown';
+	$lang['menu']				= 'Menu';
+	$lang['menu_name']			= 'Menu';
+	$lang['menu_desc']			= 'Show selected links';
+	$lang['menu_f_link']		= 'Link %s';
 ?>
