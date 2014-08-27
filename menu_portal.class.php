@@ -44,6 +44,8 @@ class menu_portal extends portal_generic {
 		'defaultnumber'		=> '2',
 	);
 	
+	protected static $apiLevel = 20;
+	
 	public function get_settings($state){
 		$arrOptions = array(
 			' ' => '',
