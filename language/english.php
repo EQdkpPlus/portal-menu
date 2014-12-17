@@ -1,6 +1,6 @@
 <?php
 /*	Project:	EQdkp-Plus
- *	Package:	Menu Portal Module
+ *	Package:	EQdkp-Plus Language File
  *	Link:		http://eqdkp-plus.eu
  *
  *	Copyright (C) 2006-2015 EQdkp-Plus Developer Team
@@ -19,8 +19,22 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-	$lang['menu']				= 'Menu';
-	$lang['menu_name']			= 'Menu';
-	$lang['menu_desc']			= 'Show selected links';
-	$lang['menu_f_link']		= 'Link %s';
+ 
+if (!defined('EQDKP_INC')) {
+	die('You cannot access this file directly.');
+}
+
+//Language: English	
+//Created by EQdkp Plus Translation Tool on  2014-12-17 21:28
+//File: portal/menu/language/english.php
+//Source-Language: german
+
+$lang = array( 
+	"menu" => 'Menu',
+	"menu_name" => 'Menu',
+	"menu_desc" => 'Show selected links',
+	"menu_f_link" => 'Link %s',
+	
+);
+
 ?>
