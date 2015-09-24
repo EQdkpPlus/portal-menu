@@ -117,7 +117,7 @@ class menu_portal extends portal_generic {
 	}
 
 	public static function uninstall(){
-		$menu_portals = register('pdh')->get('portal', 'id_list', array('path' => 'menu'));
+		$menu_portals = register('pdh')->get('portal', 'id_list', array(array('path' => 'menu')));
 		$conf = register('config');
 		foreach($menu_portals as $id) {
 			for($i=1;$i<=$conf->get('link_count', 'pmod_'.$id);$i++) {
